@@ -11,7 +11,7 @@ import {
   DialogTrigger,
 } from "@/app/_components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PlusIcon } from "lucide-react";
+import { Loader2Icon, PlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -23,27 +23,20 @@ import {
 } from "@/app/_components/ui/form";
 import { Input } from "@/app/_components/ui/input";
 import { NumericFormat } from "react-number-format";
-import { z } from "zod";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { useState } from "react";
+import {
+  createProductSchema,
+  CreateProductSchema,
+} from "@/app/_actions/products/create-product/schema";
+import { createProduct } from "@/app/_actions/products/create-product";
 
-const formSchema = z.object({
-  name: z.string().trim().min(1, { message: "Nome é obrigatório." }),
-  price: z.number().min(0.01, { message: "Preço é obrigatório." }),
-  stock: z.coerce
-    .number()
-    .positive({
-      message: "Estoque não pode ser negativo.",
-    })
-    .int()
-    .min(0, { message: "Estoque é obrigatório." }),
-});
+const CreateProductButton = () => {
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
 
-type FormSchema = z.infer<typeof formSchema>;
-
-const AddProductButton = () => {
-  const form = useForm<FormSchema>({
+  const form = useForm<CreateProductSchema>({
     shouldUnregister: true,
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createProductSchema),
     defaultValues: {
       name: "",
       price: 0,
@@ -51,12 +44,17 @@ const AddProductButton = () => {
     },
   });
 
-  const onSubmit = (data: FormSchema) => {
-    console.log(data);
+  const onSubmit = async (data: CreateProductSchema) => {
+    try {
+      await createProduct(data);
+      setDialogIsOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
         <Button className="gap-2">
           <PlusIcon size={20} />
@@ -136,7 +134,16 @@ const AddProductButton = () => {
                   Cancelar
                 </Button>
               </DialogClose>
-              <Button type="submit">Salvar</Button>
+              <Button
+                type="submit"
+                disabled={form.formState.isSubmitting}
+                className="gap-1.5"
+              >
+                {form.formState.isSubmitting && (
+                  <Loader2Icon className="animate-spin" size={16} />
+                )}
+                Salvar
+              </Button>
             </DialogFooter>
           </form>
         </Form>
@@ -145,4 +152,4 @@ const AddProductButton = () => {
   );
 };
 
-export default AddProductButton;
+export default CreateProductButton;
