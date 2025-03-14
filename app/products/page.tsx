@@ -18,7 +18,7 @@ const ProductsPage = async () => {
           </span>
           <h2 className="text-xl font-semibold">Produtos</h2>
         </div>
-        <AddProductButton />
+        <AddProductButton /> 
       </div>
       <DataTable columns={productTableColumns} data={products} />
     </div>
