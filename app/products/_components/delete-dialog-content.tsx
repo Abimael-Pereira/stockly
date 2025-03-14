@@ -1,4 +1,4 @@
-import { deleteProduct } from "@/app/_actions/products/create-product/delete-product";
+import { deleteProduct } from "@/app/_actions/products/delete-product";
 import {
   AlertDialogAction,
   AlertDialogCancel,
