@@ -27,16 +27,29 @@ import { Loader2Icon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import { upsertProduct } from "@/app/_actions/products/upsert-product";
+import { useAction } from "next-safe-action/hooks";
+import { toast } from "sonner";
+import { Dispatch, SetStateAction } from "react";
 
 interface UpserProductDialogContentProps {
   defaultValues?: UpsertProductSchema;
-  onSuccess?: () => void;
+  setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const UpsertProductDialogContent = ({
   defaultValues,
-  onSuccess,
+  setDialogIsOpen,
 }: UpserProductDialogContentProps) => {
+  const { execute: executeUpsertProduct } = useAction(upsertProduct, {
+    onSuccess: () => {
+      toast.success("Produto salvo com sucesso");
+      setDialogIsOpen(false);
+    },
+    onError: () => {
+      toast.error("Erro ao salvar produto");
+    },
+  });
+
   const form = useForm<UpsertProductSchema>({
     shouldUnregister: true,
     resolver: zodResolver(upsertProductSchema),
@@ -49,19 +62,13 @@ const UpsertProductDialogContent = ({
 
   const isEditing = !!defaultValues;
 
-  const onSubmit = async (data: UpsertProductSchema) => {
-    try {
-      await upsertProduct({ ...data, id: defaultValues?.id });
-      onSuccess?.();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <DialogContent>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(executeUpsertProduct)}
+          className="space-y-8"
+        >
           <DialogHeader>
             <DialogTitle>{isEditing ? "Editar" : "Criar"} Produto</DialogTitle>
             <DialogDescription>Insira as informações abaixo</DialogDescription>
