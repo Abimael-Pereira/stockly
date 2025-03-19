@@ -7,21 +7,7 @@ declare global {
 }
 
 const createPrismaClient = () => {
-  return new PrismaClient().$extends({
-    result: {
-      product: {
-        status: {
-          needs: { stock: true },
-          compute(product) {
-            if (product.stock <= 0) {
-              return "OUT-OF-STOCK";
-            }
-            return "IN-STOCK";
-          },
-        },
-      },
-    },
-  });
+  return new PrismaClient();
 };
 
 let prisma: ReturnType<typeof createPrismaClient>;
