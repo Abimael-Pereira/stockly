@@ -62,11 +62,15 @@ const UpsertProductDialogContent = ({
 
   const isEditing = !!defaultValues;
 
+  const onSubmit = (data: UpsertProductSchema) => {
+    executeUpsertProduct({...data, id: defaultValues?.id});
+  }
+
   return (
     <DialogContent>
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(executeUpsertProduct)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8"
         >
           <DialogHeader>
