@@ -8,23 +8,24 @@ import { ComboboxOption } from "@/app/_components/ui/combobox";
 import { useState } from "react";
 import { PlusIcon } from "lucide-react";
 
-interface CreateSaleButtonProps {
+interface UpsertSaleButtonProps {
   products: Product[];
   productOptions: ComboboxOption[];
 }
 
-const CreateSaleButton = (props: CreateSaleButtonProps) => {
+const UpsertSaleButton = (props: UpsertSaleButtonProps) => {
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
   return (
     <Sheet open={sheetIsOpen} onOpenChange={setSheetIsOpen}>
       <SheetTrigger asChild>
         <Button className="gap-2">
-        <PlusIcon size={20} />
-        Nova Venda</Button>
+          <PlusIcon size={20} />
+          Nova Venda
+        </Button>
       </SheetTrigger>
       <UpsertSheetContent setSheetIsOpen={setSheetIsOpen} {...props} />
     </Sheet>
   );
 };
 
-export default CreateSaleButton;
+export default UpsertSaleButton;

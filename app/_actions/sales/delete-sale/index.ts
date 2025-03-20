@@ -12,6 +12,7 @@ export const deleteSale = actionClient
       where: {
         id,
       },
+      
     });
     revalidatePath("/sales");
   });
