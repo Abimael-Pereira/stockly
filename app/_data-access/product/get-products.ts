@@ -3,8 +3,10 @@ import "server-only";
 import { db } from "@/app/_lib/prisma";
 import { Product } from "@prisma/client";
 
+export type ProductStatusDto = "IN-STOCK" | "OUT-OF-STOCK";
+
 export interface ProductDto extends Product {
-  status: "IN-STOCK" | "OUT-OF-STOCK";
+  status: ProductStatusDto;
 }
 
 export const getProducts = async (): Promise<ProductDto[]> => {

@@ -18,6 +18,7 @@ import {
 import { getDashboard } from "../_data-access/dashboard/get-dashboard";
 import { formatCurrency } from "../_helpers/currency";
 import ReveneuChart from "./_components/reveneu-chart";
+import MostSoldProductsItem from "./_components/most-sold-produict-item";
 
 const HomePage = async () => {
   const {
@@ -27,6 +28,7 @@ const HomePage = async () => {
     totalSales,
     totalStock,
     totalLast14DaysReveneu,
+    mostSoldProducts,
   } = await getDashboard();
   return (
     <div className="m-8 flex w-full flex-col space-y-8 rounded-lg">
@@ -80,10 +82,23 @@ const HomePage = async () => {
         </SummaryCard>
       </div>
 
-      <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white p-6">
-        <p className="text-lg font-semibold text-slate-900">Receita</p>
-        <p className="text-sm text-slate-400">Últimos 14 dias</p>
-        <ReveneuChart data={totalLast14DaysReveneu} />
+      <div className="grid min-h-0 grid-cols-[minmax(0,2.5fr),minmax(0,1fr)] gap-6">
+        <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white p-6">
+          <p className="text-lg font-semibold text-slate-900">Receita</p>
+          <p className="text-sm text-slate-400">Últimos 14 dias</p>
+          <ReveneuChart data={totalLast14DaysReveneu} />
+        </div>
+
+        <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white">
+          <p className="p-6 text-lg font-semibold text-slate-900">
+            Produtos mais vendidos
+          </p>
+          <div className="space-y-7 overflow-y-auto px-6 pb-6">
+            {mostSoldProducts.map((product) => (
+              <MostSoldProductsItem key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
