@@ -1,4 +1,4 @@
-import { getTotalReveneu } from "@/app/_data-access/dashboard/get-total-reveneu";
+import { getTotalReveneu } from "@/app/_data-access/dashboard/get-total-revenue";
 import {
   SummaryCard,
   SummaryCardIcon,

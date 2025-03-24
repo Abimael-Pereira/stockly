@@ -1,4 +1,4 @@
-import { getTodayRevenue } from "@/app/_data-access/dashboard/get-today-reveneu";
+import { getTodayRevenue } from "@/app/_data-access/dashboard/get-today-revenue";
 import {
   SummaryCard,
   SummaryCardIcon,

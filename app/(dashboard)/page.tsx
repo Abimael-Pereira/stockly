@@ -13,6 +13,8 @@ import TotalProductStock from "./_components/product-stock-card";
 import TotalProducts from "./_components/total-products";
 import { getTotalLast14DaysReveneu } from "../_data-access/dashboard/get-lastdays-revenue";
 import { getMostSoldProducts } from "../_data-access/dashboard/get-most-sold-products";
+import { Suspense } from "react";
+import { SummaryCardSkeleton } from "./_components/summary-card";
 
 const HomePage = async () => {
   const { mostSoldProducts } = await getMostSoldProducts();
@@ -28,8 +30,12 @@ const HomePage = async () => {
       </Header>
 
       <div className="grid grid-cols-2 gap-6">
-        <TotalRevenueCard />
-        <TodayRevenueCard />
+        <Suspense fallback={<SummaryCardSkeleton />}>
+          <TotalRevenueCard />
+        </Suspense>
+        <Suspense fallback={<SummaryCardSkeleton />}>
+          <TodayRevenueCard />
+        </Suspense>
       </div>
       <div className="grid grid-cols-3 gap-6">
         <TotalSalesCard />
