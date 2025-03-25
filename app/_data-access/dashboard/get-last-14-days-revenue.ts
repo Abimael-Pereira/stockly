@@ -3,7 +3,7 @@ import "server-only"
 import { db } from "@/app/_lib/prisma";
 import dayJs from "dayjs";
 
-export interface DayReveneu {
+export interface DayReveneuDto {
   day: string;
   totalReveneu: number;
 }
@@ -13,7 +13,7 @@ export const getTotalLast14DaysReveneu = async () => {
   const last14Days = [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((day) =>
     dayJs(today).subtract(day, "day"),
   );
-  const totalLast14DaysReveneu: DayReveneu[] = [];
+  const totalLast14DaysReveneu: DayReveneuDto[] = [];
   for (const day of last14Days) {
     const dayTotalReveneu = await db.$queryRawUnsafe<
       { totalReveneu: number }[]
