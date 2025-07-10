@@ -1,7 +1,8 @@
-import "server-only"
+import 'server-only';
 
-import { db } from "@/app/_lib/prisma";
-import { ProductStatusDto } from "../product/get-products";
+import { db } from '@/app/_lib/prisma';
+import { ProductStatusDto } from '../product/get-products';
+import { Prisma } from '@prisma/client';
 
 export interface MostSoldProductDto {
   id: string;
@@ -12,7 +13,7 @@ export interface MostSoldProductDto {
 }
 
 export const getMostSoldProducts = async () => {
-  const mostSoldProductQuery = `
+  const mostSoldProductQuery = Prisma.sql`
     SELECT "Product"."name", SUM("SaleProduct"."quantity") as "totalSold", "Product"."price", "Product"."stock", "Product"."id"
     FROM "SaleProduct"
     JOIN "Product" ON "SaleProduct"."productId" = "Product"."id"
@@ -20,7 +21,7 @@ export const getMostSoldProducts = async () => {
     ORDER BY "totalSold" DESC
     LIMIT 5;
   `;
-  const mostSoldProductsPromisse = db.$queryRawUnsafe<
+  const mostSoldProductsPromisse = db.$queryRaw<
     {
       id: string;
       name: string;
@@ -36,7 +37,9 @@ export const getMostSoldProducts = async () => {
       ...product,
       totalSold: Number(product.totalSold),
       price: Number(product.price),
-      status: (product.stock > 0 ? "IN-STOCK" : "OUT-OF-STOCK") as ProductStatusDto,
+      status: (product.stock > 0
+        ? 'IN-STOCK'
+        : 'OUT-OF-STOCK') as ProductStatusDto,
     })),
   };
 };

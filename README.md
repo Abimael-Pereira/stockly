@@ -26,7 +26,7 @@ cd stockly
 # Instale as dependências
 npm install
 
-# Configure o .env
+# Configure o .env utilizando o .env.example como referência
 
 # Rode as migrations
 npx prisma migrate dev
