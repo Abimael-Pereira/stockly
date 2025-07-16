@@ -1,8 +1,8 @@
 "use client";
 
 import {
-  upsertProductSchema,
-  UpsertProductSchema,
+  upsertProductFormSchema,
+  UpsertProductFormSchema,
 } from "@/app/_actions/products/upsert-product/schema";
 import { Button } from "@/app/_components/ui/button";
 import {
@@ -32,13 +32,15 @@ import { toast } from "sonner";
 import { Dispatch, SetStateAction } from "react";
 
 interface UpserProductDialogContentProps {
-  defaultValues?: UpsertProductSchema;
+  defaultValues?: UpsertProductFormSchema;
   setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
+  userSessionId: string;
 }
 
 const UpsertProductDialogContent = ({
   defaultValues,
   setDialogIsOpen,
+  userSessionId,
 }: UpserProductDialogContentProps) => {
   const { execute: executeUpsertProduct } = useAction(upsertProduct, {
     onSuccess: () => {
@@ -50,9 +52,9 @@ const UpsertProductDialogContent = ({
     },
   });
 
-  const form = useForm<UpsertProductSchema>({
+  const form = useForm<UpsertProductFormSchema>({
     shouldUnregister: true,
-    resolver: zodResolver(upsertProductSchema),
+    resolver: zodResolver(upsertProductFormSchema),
     defaultValues: defaultValues ?? {
       name: "",
       price: 0,
@@ -62,17 +64,18 @@ const UpsertProductDialogContent = ({
 
   const isEditing = !!defaultValues;
 
-  const onSubmit = (data: UpsertProductSchema) => {
-    executeUpsertProduct({...data, id: defaultValues?.id});
-  }
+  const onSubmit = (data: UpsertProductFormSchema) => {
+    executeUpsertProduct({
+      ...data,
+      userId: userSessionId,
+      id: defaultValues?.id,
+    });
+  };
 
   return (
     <DialogContent>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <DialogHeader>
             <DialogTitle>{isEditing ? "Editar" : "Criar"} Produto</DialogTitle>
             <DialogDescription>Insira as informações abaixo</DialogDescription>
@@ -108,8 +111,6 @@ const UpsertProductDialogContent = ({
                     onValueChange={(values) => {
                       field.onChange(values.floatValue);
                     }}
-                    {...field}
-                    onChange={() => {}}
                   />
                 </FormControl>
                 <FormMessage />

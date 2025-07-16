@@ -2,16 +2,16 @@
 
 import { db } from "@/app/_lib/prisma";
 import { revalidatePath } from "next/cache";
-import { upsertProductSchema } from "./schema";
+import { upserProductActionSchema } from "./schema";
 import { actionClient } from "@/app/_lib/safe-action";
 
 export const upsertProduct = actionClient
-  .schema(upsertProductSchema)
-  .action(async ({ parsedInput: { id, ...data } }) => {
+  .schema(upserProductActionSchema)
+  .action(async ({ parsedInput: { id, userId, ...data } }) => {
     await db.product.upsert({
       where: { id: id ?? "" },
       update: data,
-      create: data,
+      create: {...data, userId},
     });
     revalidatePath("/products");
     revalidatePath("/");

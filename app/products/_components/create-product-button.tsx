@@ -5,9 +5,12 @@ import { Dialog, DialogTrigger } from "@/app/_components/ui/dialog";
 import { PlusIcon } from "lucide-react";
 import UpsertProductDialogContent from "./upsert-dialog-content";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import LoginUpsertDialog from "@/app/(dashboard)/_components/login-dialog";
 
 const CreateProductButton = () => {
   const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const { data: session } = useSession();
 
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
@@ -17,7 +20,15 @@ const CreateProductButton = () => {
           Novo Produto
         </Button>
       </DialogTrigger>
-      <UpsertProductDialogContent setDialogIsOpen={setDialogIsOpen} />
+
+      {session?.user ? (
+        <UpsertProductDialogContent
+          userSessionId={session.user.id}
+          setDialogIsOpen={setDialogIsOpen}
+        />
+      ) : (
+        <LoginUpsertDialog />
+      )}
     </Dialog>
   );
 };
