@@ -72,7 +72,7 @@ const UpsertSheetContent = ({
   products,
   setSheetIsOpen,
   defaultSelectedProduct,
-  userId
+  userId,
 }: UpsertSheetContentProps) => {
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     defaultSelectedProduct ?? [],
