@@ -11,7 +11,7 @@ import { getProducts } from "../_data-access/product/get-products";
 import { getSales } from "../_data-access/sale/get-sales";
 import UpsertSaleButton from "./_components/create-sale-button";
 import { saleTableColumns } from "./_components/table-columns";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../api/auth/authOptions";
 
 const SalesPage = async () => {
   const session = await getServerSession(authOptions);
@@ -19,7 +19,7 @@ const SalesPage = async () => {
 
   const sales = await getSales(userId);
   const products = await getProducts(userId);
-  
+
   const productOptions: ComboboxOption[] = products.map((product) => ({
     value: product.id,
     label: product.name,

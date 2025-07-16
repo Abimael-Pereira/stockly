@@ -10,7 +10,7 @@ import Header, {
   HeaderTitle,
 } from "../_components/header";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "../api/auth/authOptions";
 
 export const revalidate = 10;
 
