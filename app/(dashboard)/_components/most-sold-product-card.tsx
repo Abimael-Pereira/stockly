@@ -2,8 +2,8 @@ import { getMostSoldProducts } from "@/app/_data-access/dashboard/get-most-sold-
 import MostSoldProductsItem from "./most-sold-product-item";
 import { Skeleton } from "@/app/_components/ui/skeleton";
 
-const MostSoldProducts = async () => {
-  const { mostSoldProducts } = await getMostSoldProducts();
+const MostSoldProducts = async ({ userId }: { userId: string | undefined }) => {
+  const { mostSoldProducts } = await getMostSoldProducts(userId);
 
   return (
     <div className="flex h-full flex-col overflow-hidden rounded-xl bg-white">
@@ -11,9 +11,10 @@ const MostSoldProducts = async () => {
         Produtos mais vendidos
       </p>
       <div className="space-y-7 overflow-y-auto px-6 pb-6">
-        {mostSoldProducts.map((product) => (
-          <MostSoldProductsItem key={product.id} product={product} />
-        ))}
+        {mostSoldProducts &&
+          mostSoldProducts.map((product) => (
+            <MostSoldProductsItem key={product.id} product={product} />
+          ))}
       </div>
     </div>
   );

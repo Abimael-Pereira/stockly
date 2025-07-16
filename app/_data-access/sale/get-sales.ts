@@ -18,12 +18,21 @@ export interface SalesDto {
   saleProducts: SaleProductDto[];
 }
 
-export const getSales = async (): Promise<SalesDto[]> => {
+
+export const getSales = async (userId: string | undefined): Promise<SalesDto[]> => {
+
+  if (!userId) {
+    return [];
+  }
+
   const sales = await db.sale.findMany({
     include: {
       saleProducts: {
         include: { product: true },
       },
+    },
+    where: {
+      userId,
     },
   });
   return sales.map((sale) => ({

@@ -9,8 +9,16 @@ export interface ProductDto extends Product {
   status: ProductStatusDto;
 }
 
-export const getProducts = async (): Promise<ProductDto[]> => {
-  const products = await db.product.findMany();
+export const getProducts = async (
+  userId: string | undefined,
+): Promise<ProductDto[]> => {
+  if (!userId) {
+    return [];
+  }
+
+  const products = await db.product.findMany({
+    where: { userId },
+  });
   return products.map((product) => ({
     ...product,
     status: product.stock === 0 ? "OUT-OF-STOCK" : "IN-STOCK",

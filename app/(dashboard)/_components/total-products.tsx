@@ -7,8 +7,8 @@ import {
 } from "./summary-card";
 import { getTotalProducts } from "@/app/_data-access/dashboard/get-total-products";
 
-const TotalProducts = async () => {
-  const totalProducts = await getTotalProducts();
+const TotalProducts = async ({ userId }: { userId: string | undefined }) => {
+  const totalProducts = await getTotalProducts(userId);
   return (
     <SummaryCard>
       <SummaryCardIcon>

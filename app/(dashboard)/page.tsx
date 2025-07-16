@@ -17,8 +17,13 @@ import { Skeleton } from "../_components/ui/skeleton";
 import MostSoldProducts, {
   MostSoldProductsSkeleton,
 } from "./_components/most-sold-product-card";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 const HomePage = async () => {
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
   return (
     <div className="m-8 flex w-full flex-col space-y-8 rounded-lg">
       <Header>
@@ -26,23 +31,24 @@ const HomePage = async () => {
           <HeaderSubtitle>Visão geral dos dados</HeaderSubtitle>
           <HeaderTitle>Dashboard</HeaderTitle>
         </HeaderLeft>
-        <div>
+        <div className="flex items-center space-x-4">
+          {!session && <h3>Acesse sua conta para visualizar os dados</h3>}
           <LoginButton />
         </div>
       </Header>
 
       <div className="grid grid-cols-2 gap-6">
         <Suspense fallback={<SummaryCardSkeleton />}>
-          <TotalRevenueCard />
+          <TotalRevenueCard userId={userId} />
         </Suspense>
         <Suspense fallback={<SummaryCardSkeleton />}>
-          <TodayRevenueCard />
+          <TodayRevenueCard userId={userId} />
         </Suspense>
       </div>
       <div className="grid grid-cols-3 gap-6">
-        <TotalSalesCard />
-        <TotalProductStock />
-        <TotalProducts />
+        <TotalSalesCard userId={userId} />
+        <TotalProductStock userId={userId} />
+        <TotalProducts userId={userId} />
       </div>
 
       <div className="grid min-h-0 grid-cols-[minmax(0,2.5fr),minmax(0,1fr)] gap-6">
@@ -56,11 +62,11 @@ const HomePage = async () => {
             </Skeleton>
           }
         >
-          <Last14DaysRevenueCard />
+          <Last14DaysRevenueCard userId={userId} />
         </Suspense>
 
         <Suspense fallback={<MostSoldProductsSkeleton />}>
-          <MostSoldProducts />
+          <MostSoldProducts userId={userId} />
         </Suspense>
       </div>
     </div>

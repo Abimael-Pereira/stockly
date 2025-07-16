@@ -8,8 +8,8 @@ import {
 import { formatCurrency } from "@/app/_helpers/currency";
 import { DollarSign } from "lucide-react";
 
-const TodayRevenueCard = async () => {
-  const todayRevenue = await getTodayRevenue();
+const TodayRevenueCard = async ({ userId }: { userId: string | undefined }) => {
+  const todayRevenue = await getTodayRevenue(userId);
   return (
     <SummaryCard>
       <SummaryCardIcon>
