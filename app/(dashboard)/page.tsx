@@ -9,6 +9,7 @@ import TodayRevenueCard from "./_components/today-revenue-card";
 import TotalSalesCard from "./_components/total-sales-card";
 import TotalProductStock from "./_components/product-stock-card";
 import TotalProducts from "./_components/total-products";
+import LoginButton from "./_components/login-button";
 import { Suspense } from "react";
 import { SummaryCardSkeleton } from "./_components/summary-card";
 import Last14DaysRevenueCard from "./_components/last-14-days-revenue-card";
@@ -25,6 +26,9 @@ const HomePage = async () => {
           <HeaderSubtitle>Visão geral dos dados</HeaderSubtitle>
           <HeaderTitle>Dashboard</HeaderTitle>
         </HeaderLeft>
+        <div>
+          <LoginButton />
+        </div>
       </Header>
 
       <div className="grid grid-cols-2 gap-6">
