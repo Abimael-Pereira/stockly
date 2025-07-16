@@ -3,7 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import { db } from "@/app/_lib/prisma";
 
-import type { DefaultSession } from "next-auth";
+import type { DefaultSession, NextAuthOptions } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
@@ -13,11 +13,11 @@ declare module "next-auth" {
   }
 }
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   callbacks: {
     async session({ session, user }) {
-      if (session.user) {
+      if (session.user && user?.id) {
         session.user.id = user.id;
       }
       return session;
@@ -29,6 +29,8 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
-});
+};
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

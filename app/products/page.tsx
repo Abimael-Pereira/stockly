@@ -9,14 +9,19 @@ import Header, {
   HeaderSubtitle,
   HeaderTitle,
 } from "../_components/header";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export const revalidate = 10;
 
 const ProductsPage = async () => {
-  const products = await getProducts();
+  const session = await getServerSession(authOptions);
+  const userId = session?.user?.id;
+
+  const products = await getProducts(userId);
 
   return (
-    <div className="m-8 w-full space-y-8 rounded-lg bg-white p-8 overflow-auto">
+    <div className="m-8 w-full space-y-8 overflow-auto rounded-lg bg-white p-8">
       <Header>
         <HeaderLeft>
           <HeaderSubtitle>Gestão de Produtos</HeaderSubtitle>
