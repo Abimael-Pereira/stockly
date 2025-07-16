@@ -9,7 +9,7 @@ import { PlusIcon } from "lucide-react";
 import { ProductDto } from "@/app/_data-access/product/get-products";
 import { useSession } from "next-auth/react";
 import { Dialog, DialogTrigger } from "@/app/_components/ui/dialog";
-import LoginUpsertDialog from "@/app/(dashboard)/_components/login-upsert-dialog";
+import LoginUpsertDialog from "@/app/(dashboard)/_components/login-dialog";
 
 interface UpsertSaleButtonProps {
   products: ProductDto[];

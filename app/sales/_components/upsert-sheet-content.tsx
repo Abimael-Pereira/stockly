@@ -62,6 +62,7 @@ interface UpsertSheetContentProps {
   productOptions: ComboboxOption[];
   setSheetIsOpen: Dispatch<SetStateAction<boolean>>;
   defaultSelectedProduct?: SelectedProduct[];
+  userId: string;
 }
 
 const UpsertSheetContent = ({
@@ -71,6 +72,7 @@ const UpsertSheetContent = ({
   products,
   setSheetIsOpen,
   defaultSelectedProduct,
+  userId
 }: UpsertSheetContentProps) => {
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     defaultSelectedProduct ?? [],
@@ -177,6 +179,7 @@ const UpsertSheetContent = ({
   const onSubmitSale = async () => {
     executeUpsertSale({
       id: saleId,
+      userId,
       products: selectedProducts.map((product) => ({
         id: product.id,
         quantity: product.quantity,

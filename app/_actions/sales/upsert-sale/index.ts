@@ -8,7 +8,7 @@ import { returnValidationErrors } from "next-safe-action";
 
 export const upsertSale = actionClient
   .schema(upsertSaleSchema)
-  .action(async ({ parsedInput: { products, id } }) => {
+  .action(async ({ parsedInput: { products, userId, id } }) => {
     const isUpdate = Boolean(id);
 
     await db.$transaction(async (trx) => {
@@ -38,6 +38,7 @@ export const upsertSale = actionClient
       const sale = await trx.sale.create({
         data: {
           date: new Date(),
+          userId,
         },
       });
 
