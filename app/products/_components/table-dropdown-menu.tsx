@@ -22,6 +22,7 @@ import { useState } from "react";
 import DeleteProductDialogContent from "./delete-dialog-content";
 import UpsertProductDialogContent from "./upsert-dialog-content";
 import { Product } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 interface ProductDropDownMenuProps {
   product: Product;
@@ -29,6 +30,9 @@ interface ProductDropDownMenuProps {
 
 const ProductTableDropdownMenu = ({ product }: ProductDropDownMenuProps) => {
   const [editDialogIsOpen, setEditDialogIsOpen] = useState(false);
+  const { data: session } = useSession();
+  const userId = session?.user.id || "";  
+
   return (
     <AlertDialog>
       <Dialog open={editDialogIsOpen} onOpenChange={setEditDialogIsOpen}>
@@ -69,6 +73,7 @@ const ProductTableDropdownMenu = ({ product }: ProductDropDownMenuProps) => {
             price: Number(product.price),
             stock: product.stock,
           }}
+          userId={userId}
           setDialogIsOpen={setEditDialogIsOpen}
         />
         <DeleteProductDialogContent productId={product.id} />

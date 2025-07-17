@@ -23,7 +23,7 @@ const CreateProductButton = () => {
 
       {session?.user ? (
         <UpsertProductDialogContent
-          userSessionId={session.user.id}
+          userId={session.user.id}
           setDialogIsOpen={setDialogIsOpen}
         />
       ) : (

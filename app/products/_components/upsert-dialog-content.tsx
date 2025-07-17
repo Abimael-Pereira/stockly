@@ -34,13 +34,13 @@ import { Dispatch, SetStateAction } from "react";
 interface UpserProductDialogContentProps {
   defaultValues?: UpsertProductFormSchema;
   setDialogIsOpen: Dispatch<SetStateAction<boolean>>;
-  userSessionId: string;
+  userId: string;
 }
 
 const UpsertProductDialogContent = ({
   defaultValues,
   setDialogIsOpen,
-  userSessionId,
+  userId,
 }: UpserProductDialogContentProps) => {
   const { execute: executeUpsertProduct } = useAction(upsertProduct, {
     onSuccess: () => {
@@ -67,7 +67,7 @@ const UpsertProductDialogContent = ({
   const onSubmit = (data: UpsertProductFormSchema) => {
     executeUpsertProduct({
       ...data,
-      userId: userSessionId,
+      userId,
       id: defaultValues?.id,
     });
   };
@@ -111,6 +111,8 @@ const UpsertProductDialogContent = ({
                     onValueChange={(values) => {
                       field.onChange(values.floatValue);
                     }}
+                    {...field}
+                    onChange={() => {}}
                   />
                 </FormControl>
                 <FormMessage />

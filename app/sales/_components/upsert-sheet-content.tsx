@@ -62,7 +62,7 @@ interface UpsertSheetContentProps {
   productOptions: ComboboxOption[];
   setSheetIsOpen: Dispatch<SetStateAction<boolean>>;
   defaultSelectedProduct?: SelectedProduct[];
-  userId: string;
+  userId: string | undefined;
 }
 
 const UpsertSheetContent = ({

@@ -9,6 +9,10 @@ import { returnValidationErrors } from "next-safe-action";
 export const upsertSale = actionClient
   .schema(upsertSaleSchema)
   .action(async ({ parsedInput: { products, userId, id } }) => {
+    if (!userId) {
+      return;
+    }
+    
     const isUpdate = Boolean(id);
 
     await db.$transaction(async (trx) => {

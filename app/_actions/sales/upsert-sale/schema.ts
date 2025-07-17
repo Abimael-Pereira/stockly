@@ -8,7 +8,7 @@ export const upsertSaleSchema = z.object({
       quantity: z.number().int().positive(),
     }),
   ),
-  userId: z.string().cuid(),
+  userId: z.string().cuid().optional(),
 });
 
 export type UpsertSaleSchema = z.infer<typeof upsertSaleSchema>;

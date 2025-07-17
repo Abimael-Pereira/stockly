@@ -33,6 +33,7 @@ import { useState } from "react";
 import { ComboboxOption } from "@/app/_components/ui/combobox";
 import { ProductDto } from "@/app/_data-access/product/get-products";
 import { SalesDto } from "@/app/_data-access/sale/get-sales";
+import { useSession } from "next-auth/react";
 
 interface SalesTableDropdownMenuProps {
   sale: Pick<SalesDto, "id" | "saleProducts">;
@@ -45,6 +46,9 @@ const SalesTableDropdownMenu = ({
   products,
   productOptions,
 }: SalesTableDropdownMenuProps) => {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+
   const [upsertSheetIsOpen, setUpsertSheetIsOpen] = useState(false);
   const { execute } = useAction(deleteSale, {
     onSuccess: () => {
@@ -121,6 +125,7 @@ const SalesTableDropdownMenu = ({
           name: saleProduct.productName,
           price: saleProduct.unitPrice,
         }))}
+        userId={userId}
       />
     </Sheet>
   );
